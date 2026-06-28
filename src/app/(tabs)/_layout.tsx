@@ -1,6 +1,7 @@
-import { themes } from '@/styles/theme';
+import { themes, themeStyle } from '@/styles/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
+import { View } from 'react-native';
 
 export default function TabLayout() {
   return (
@@ -19,29 +20,55 @@ export default function TabLayout() {
         name='index'
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name='home' size={size} color={color} />
+          tabBarIcon: ({ focused,color, size }) => (
+            <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />
           ),
         }}
       />
-      <Tabs.Screen
-        name='add-product'
-        options={{
-          title: 'Add Product',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name='add-circle' size={size} color={color} />
-          ),
-        }}
-      />
+  
       <Tabs.Screen
         name='products'
         options={{
           title: 'Lists',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name='list' size={size} color={color} />
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons name={focused ? 'cart' : 'cart-outline'} size={size} color={color} />
           ),
         }}
       />
+      
+      <Tabs.Screen
+        name="scan"
+        options={{
+          title: 'Scan', 
+          tabBarIcon: ({ focused, color, size }) => (
+            <View style={themeStyle.scanButton}>
+              <Ionicons  name={focused ? 'camera' : 'camera-outline'}  size={size} color={color} />
+            </View>
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="vault"
+        options={{
+          title: 'Vault',
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons name={focused ? 'receipt' : 'receipt-outline'} size={size} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="analytics"
+        options={{
+          title: 'Insights',
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons name={focused ? 'stats-chart' : 'stats-chart-outline'} size={size} color={color} />
+          ),
+        }}
+      />
+
+      
     </Tabs>
   );
 }
