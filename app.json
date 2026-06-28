@@ -39,6 +39,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "124199a2-12f7-4927-baf7-7cca08f89a04"
+      }
+    },
+    "owner": "wang_ories"
   }
 }
