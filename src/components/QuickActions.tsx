@@ -7,15 +7,15 @@ export const QuickActions = ({ theme }: { theme: any }) => (
   <View style={styles.actionGrid}>
     <ButtonAction
       icon="cart"
-      label="Historique"
+      label="History"
       theme={theme}
       onPress={() => router.push("/transactions")}
     />
     <ButtonAction
       icon="add"
-      label="Ajouter"
+      label="Add Expense"
       theme={theme}
-      onPress={() => router.push("/")}
+      onPress={() => router.push("/add-expense")}
     />
     <ButtonAction
       icon="pie-chart"
