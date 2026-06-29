@@ -1,7 +1,17 @@
+import { themes } from "@/styles/theme";
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 export const ExpenseList = ({ transactions, theme }: any) => {
+  const iconMap: { [key: string]: string } = {
+    'Food': 'fast-food',
+    'Transport': 'car',
+    'Shopping': 'cart',
+    'Home': 'home',
+    'Leisure': 'game-controller',
+  };
+
   return (
     <FlatList
       data={transactions}
@@ -10,9 +20,11 @@ export const ExpenseList = ({ transactions, theme }: any) => {
         <View style={[styles.item, { backgroundColor: theme.surface }]}>
           <View style={styles.left}>
             <View style={[styles.icon, { backgroundColor: theme.header }]}>
-              <Text style={{ fontSize: 20 }}>
-                {item.category.split(" ")[0]}
-              </Text>
+              <Ionicons 
+                name={iconMap[item.category] as any || 'cash-outline'} 
+                size={22} 
+                color={themes.primary} 
+              />
             </View>
             <View>
               <Text style={{ color: theme.text, fontWeight: "600" }}>

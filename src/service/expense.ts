@@ -11,8 +11,8 @@ export interface Transaction {
 }
 
 export const budgetService = {
-  // Récupérer toutes les données (Budget + Transactions)
-  getData: async () => {
+
+    getData: async () => {
     const json = await AsyncStorage.getItem(STORAGE_KEY);
     return json
       ? JSON.parse(json)
@@ -36,7 +36,7 @@ export const budgetService = {
       category,
       date: new Date().toISOString(),
     };
-    data.transactions.unshift(newTransaction); // Ajouter au début
+    data.transactions.unshift(newTransaction); // Ajouter au début de la liste pour que les plus récentes apparaissent en premier
     data.spent += amount;
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     return newTransaction;

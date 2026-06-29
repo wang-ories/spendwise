@@ -78,5 +78,51 @@ export const themeStyle = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
   },
-  bell: { backgroundColor: themes.surface, padding: 10, borderRadius: 12 },
+  bell: { 
+    backgroundColor: themes.surface, 
+    padding: 10, 
+    borderRadius: 12 
+  },
+  input: { 
+    backgroundColor: '#2a2a4a', 
+    padding: 20, 
+    borderRadius: 15, 
+    color: '#fff', 
+    marginBottom: 15 
+  },
+  amount: { 
+    fontSize: 32, 
+    textAlign: 'center' 
+  },
+  btn: { 
+    padding: 20, 
+    borderRadius: 15, 
+    alignItems: 'center', 
+    marginTop: 20 
+  },
+  emptyContainer: { 
+    padding: 30, 
+    alignItems: 'center', 
+    backgroundColor: themes.surface, 
+    borderRadius: 20 
+  },
+  amountContainer: { flexDirection: 'row',  marginBottom: 20 },
+  currency: { color: themes.primary, fontSize: 32, fontWeight: 'bold', marginRight: 10 },
+  amountInput: { color: '#fff', fontSize: 48, fontWeight: 'bold', textAlign: 'center' },
+  titleInput: { backgroundColor: themes.surface, padding: 20, borderRadius: 20, color: '#fff', fontSize: 16, marginBottom: 30 },
+  sectionLabel: { color: themes.textSecondary, fontSize: 14, marginBottom: 15, fontWeight: '600' },
+  categoryContainer: { marginBottom: 40 },
+  categoryChip: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    paddingHorizontal: 20, 
+    paddingVertical: 12, 
+    borderRadius: 25, 
+    marginRight: 12 
+  },
+  categoryLabel: { marginLeft: 8, fontWeight: '600', fontSize: 14 },
+  saveBtn: { padding: 20, borderRadius: 20, alignItems: 'center', marginTop: 10, elevation: 5 },
+  saveBtnText: { color: themes.background, fontWeight: 'bold', fontSize: 16 },
+  cancelBtn: { marginTop: 20, alignItems: 'center' }
+
 });

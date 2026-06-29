@@ -2,7 +2,8 @@ import { BudgetCard } from "@/components/BudgetCard";
 import { SetBudgetModal } from "@/components/BudgetModal";
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { QuickActions } from "@/components/QuickActions";
-import { budgetService } from "@/service/expense";
+import { TransactionItem } from "@/components/TransactionItem";
+import { budgetService, Transaction } from "@/service/expense";
 import { profileService } from "@/service/profile";
 import { themes, themeStyle } from "@/styles/theme";
 import { Ionicons } from "@expo/vector-icons";
@@ -18,13 +19,13 @@ import {
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function DashboardScreen() {
-  const [budget, setBudget] = useState({ spent: 0, total: 0 }); // Budget state
-  const [refreshing, setRefreshing] = useState(false); // Refresh state
-  const [user, setUser] = useState({ firstName: "", lastName: "" }); // Profile state
+  const [budgetData, setBudget] = useState({ spent: 0, total: 0, transactions: [] as Transaction[] });
+
+  const [refreshing, setRefreshing] = useState(false); 
+  const [user, setUser] = useState({ firstName: "", lastName: "" }); 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const loadData = async () => {
-    // Charger le budget et le profil en parallèle
     const [budgetData, profileData] = await Promise.all([
       budgetService.getData(),
       profileService.getProfile(),
@@ -66,7 +67,7 @@ export default function DashboardScreen() {
           theme={themes}
         />
         <TouchableOpacity onPress={() => setIsModalVisible(true)} activeOpacity={0.9}>
-          <BudgetCard spent={budget.spent} total={budget.total} theme={themes} />
+          <BudgetCard spent={budgetData.spent} total={budgetData.total} theme={themes} />
 
           <View style={styles.editBadge}>
             <Ionicons name="pencil" size={12} color={themes.background} />
@@ -75,18 +76,23 @@ export default function DashboardScreen() {
         </TouchableOpacity>
         <QuickActions theme={themes} />
         <Text style={styles.sectionTitle}>Recent Bills</Text>
-        <TransactionItem
-          store="IGA Supermarket"
-          date="Today"
-          price="-$42.00"
-          icon="basket"
-        />
-        <TransactionItem
-          store="Tim Hortons"
-          date="Yesterday"
-          price="-$12.99"
-          icon="logo-apple"
-        />
+
+        {budgetData.transactions.length > 0 ? (
+          budgetData.transactions.slice(0, 3).map((item) => (
+            <TransactionItem 
+              key={item.id}
+              store={item.title} 
+              category={item.category}
+              date={new Date(item.date).toLocaleDateString()} 
+              price={`-$${item.amount}`} 
+            />
+          ))
+        ) : (
+          <View style={themeStyle.emptyContainer}>
+            <Text style={{ color: themes.textSecondary }}>No recent transactions</Text>
+          </View>
+        )}
+      
       </ScrollView>
       <SetBudgetModal 
         visible={isModalVisible} 
@@ -98,20 +104,6 @@ export default function DashboardScreen() {
   );
 }
 
-const TransactionItem = ({ store, date, price, icon }: any) => (
-  <View style={styles.transCard}>
-    <View style={styles.transLeft}>
-      <View style={styles.transIcon}>
-        <Ionicons name={icon} size={20} color={themes.text} />
-      </View>
-      <View>
-        <Text style={styles.transStore}>{store}</Text>
-        <Text style={styles.transDate}>{date}</Text>
-      </View>
-    </View>
-    <Text style={styles.transPrice}>{price}</Text>
-  </View>
-);
 
 const styles = StyleSheet.create({
   budgetCard: {
