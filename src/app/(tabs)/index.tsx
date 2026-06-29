@@ -1,4 +1,5 @@
 import { BudgetCard } from "@/components/BudgetCard";
+import { SetBudgetModal } from "@/components/BudgetModal";
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { QuickActions } from "@/components/QuickActions";
 import { budgetService } from "@/service/expense";
@@ -11,6 +12,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -19,6 +21,7 @@ export default function DashboardScreen() {
   const [budget, setBudget] = useState({ spent: 0, total: 0 }); // Budget state
   const [refreshing, setRefreshing] = useState(false); // Refresh state
   const [user, setUser] = useState({ firstName: "", lastName: "" }); // Profile state
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const loadData = async () => {
     // Charger le budget et le profil en parallèle
@@ -29,6 +32,11 @@ export default function DashboardScreen() {
 
     setBudget(budgetData);
     setUser(profileData);
+  };
+
+  const handleUpdateTotalBudget = async (total: number) => {
+    await budgetService.saveTotalBudget(total);
+    loadData(); 
   };
 
   useEffect(() => {
@@ -57,7 +65,14 @@ export default function DashboardScreen() {
           name={`${user.firstName} ${user.lastName}`}
           theme={themes}
         />
-        <BudgetCard spent={budget.spent} total={budget.total} theme={themes} />
+        <TouchableOpacity onPress={() => setIsModalVisible(true)} activeOpacity={0.9}>
+          <BudgetCard spent={budget.spent} total={budget.total} theme={themes} />
+
+          <View style={styles.editBadge}>
+            <Ionicons name="pencil" size={12} color={themes.background} />
+            <Text style={styles.editText}>Edit</Text>
+          </View>
+        </TouchableOpacity>
         <QuickActions theme={themes} />
         <Text style={styles.sectionTitle}>Recent Bills</Text>
         <TransactionItem
@@ -73,6 +88,12 @@ export default function DashboardScreen() {
           icon="logo-apple"
         />
       </ScrollView>
+      <SetBudgetModal 
+        visible={isModalVisible} 
+        onClose={() => setIsModalVisible(false)} 
+        onSave={handleUpdateTotalBudget} 
+        theme={themes}
+      />
     </SafeAreaProvider>
   );
 }
@@ -178,4 +199,21 @@ const styles = StyleSheet.create({
     color: themes.primary,
     fontWeight: "bold",
   },
+  editBadge: {
+    position: 'absolute',
+    right: 35,
+    top: 20,
+    backgroundColor: themes.primary,
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 10,
+    alignItems: 'center',
+    gap: 4
+  },
+  editText: {
+    color: themes.background,
+    fontSize: 10,
+    fontWeight: 'bold'
+  }
 });

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import {
-  Modal,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Modal,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 
 export const SetBudgetModal = ({ visible, onClose, onSave, theme }: any) => {
@@ -16,14 +16,14 @@ export const SetBudgetModal = ({ visible, onClose, onSave, theme }: any) => {
       <View style={styles.overlay}>
         <View style={[styles.content, { backgroundColor: theme.surface }]}>
           <Text style={[styles.title, { color: theme.text }]}>
-            Modifier le Budget
+            Modify the Budget
           </Text>
           <TextInput
             style={[
               styles.input,
               { color: theme.text, borderColor: theme.header },
             ]}
-            placeholder="Ex: 1200"
+            placeholder="Ex: 800"
             placeholderTextColor={theme.textSecondary}
             keyboardType="numeric"
             value={value}
@@ -32,7 +32,7 @@ export const SetBudgetModal = ({ visible, onClose, onSave, theme }: any) => {
           />
           <View style={styles.row}>
             <TouchableOpacity onPress={onClose} style={styles.btn}>
-              <Text style={{ color: theme.textSecondary }}>Annuler</Text>
+              <Text style={{ color: theme.textSecondary }}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -46,7 +46,7 @@ export const SetBudgetModal = ({ visible, onClose, onSave, theme }: any) => {
               ]}
             >
               <Text style={{ color: theme.background, fontWeight: "bold" }}>
-                Enregistrer
+                Save
               </Text>
             </TouchableOpacity>
           </View>
