@@ -1,0 +1,35 @@
+import { router } from "expo-router";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { ButtonAction } from "./ButtonAction";
+
+export const QuickActions = ({ theme }: { theme: any }) => (
+  <View style={styles.actionGrid}>
+    <ButtonAction
+      icon="cart"
+      label="Historique"
+      theme={theme}
+      onPress={() => router.push("/transactions")}
+    />
+    <ButtonAction
+      icon="add"
+      label="Ajouter"
+      theme={theme}
+      onPress={() => router.push("/")}
+    />
+    <ButtonAction
+      icon="pie-chart"
+      label="Stats"
+      theme={theme}
+      onPress={() => router.push("/")}
+    />
+  </View>
+);
+
+const styles = StyleSheet.create({
+  actionGrid: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 30,
+  },
+});

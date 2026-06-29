@@ -1,7 +1,6 @@
-import { themes, themeStyle } from '@/styles/theme';
-import { Ionicons } from '@expo/vector-icons';
-import { Tabs } from 'expo-router';
-import { View } from 'react-native';
+import { themes } from "@/styles/theme";
+import { Ionicons } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
 
 export default function TabLayout() {
   return (
@@ -17,33 +16,43 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name='index'
+        name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ focused,color, size }) => (
-            <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />
-          ),
-        }}
-      />
-  
-      <Tabs.Screen
-        name='products'
-        options={{
-          title: 'Lists',
+          title: "Home",
           tabBarIcon: ({ focused, color, size }) => (
-            <Ionicons name={focused ? 'cart' : 'cart-outline'} size={size} color={color} />
+            <Ionicons
+              name={focused ? "home" : "home-outline"}
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
-      
+
+      <Tabs.Screen
+        name="transactions"
+        options={{
+          title: "Transactions",
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? "cart" : "cart-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+
       <Tabs.Screen
         name="scan"
         options={{
-          title: 'Scan', 
+          title: "Scan",
           tabBarIcon: ({ focused, color, size }) => (
-            <View style={themeStyle.scanButton}>
-              <Ionicons  name={focused ? 'camera' : 'camera-outline'}  size={size} color={color} />
-            </View>
+            <Ionicons
+              name={focused ? "camera" : "camera-outline"}
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
@@ -51,9 +60,13 @@ export default function TabLayout() {
       <Tabs.Screen
         name="vault"
         options={{
-          title: 'Vault',
+          title: "Vault",
           tabBarIcon: ({ focused, color, size }) => (
-            <Ionicons name={focused ? 'receipt' : 'receipt-outline'} size={size} color={color} />
+            <Ionicons
+              name={focused ? "receipt" : "receipt-outline"}
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
@@ -61,14 +74,16 @@ export default function TabLayout() {
       <Tabs.Screen
         name="analytics"
         options={{
-          title: 'Insights',
+          title: "Insights",
           tabBarIcon: ({ focused, color, size }) => (
-            <Ionicons name={focused ? 'stats-chart' : 'stats-chart-outline'} size={size} color={color} />
+            <Ionicons
+              name={focused ? "stats-chart" : "stats-chart-outline"}
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
-
-      
     </Tabs>
   );
 }
