@@ -2,6 +2,7 @@ import { BudgetCard } from "@/components/BudgetCard";
 import { SetBudgetModal } from "@/components/BudgetModal";
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { QuickActions } from "@/components/QuickActions";
+import { AddReminderModal } from "@/components/ReminderModal";
 import { TransactionItem } from "@/components/TransactionItem";
 import { budgetService, Transaction } from "@/service/expense";
 import { profileService } from "@/service/profile";
@@ -29,6 +30,8 @@ export default function DashboardScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [user, setUser] = useState({ firstName: "", lastName: "" });
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isReminderVisible, setIsReminderVisible] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0); 
 
   const loadData = async () => {
     const [budgetData, profileData] = await Promise.all([
@@ -88,7 +91,7 @@ export default function DashboardScreen() {
             <Text style={styles.editText}>Edit</Text>
           </View>
         </TouchableOpacity>
-        <QuickActions theme={themes} />
+        <QuickActions theme={themes}   onPressRemind={() => setIsReminderVisible(true)} />
         <Text style={styles.sectionTitle}>Recent Bills</Text>
 
         {budgetData.transactions.length > 0 ? (
@@ -116,6 +119,12 @@ export default function DashboardScreen() {
         onClose={() => setIsModalVisible(false)}
         onSave={handleUpdateTotalBudget}
         theme={themes}
+      />
+      <AddReminderModal 
+        visible={isReminderVisible}
+        theme={themes}
+        onClose={() => setIsReminderVisible(false)}
+        onRefresh={() => setRefreshKey(prev => prev + 1)}
       />
     </SafeAreaProvider>
   );

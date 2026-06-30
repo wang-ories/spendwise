@@ -11,7 +11,7 @@ export const ButtonAction = ({ icon, label, theme, onPress }: any) => (
 );
 
 const styles = StyleSheet.create({
-  action: { alignItems: "center", width: "30%" },
+  action: { alignItems: "center", width: "25%" },
   icon: {
     width: 55,
     height: 55,

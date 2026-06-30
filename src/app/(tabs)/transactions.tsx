@@ -30,7 +30,7 @@ export default function TransactionScreen() {
           All Transactions
         </Text>
         <Text style={[themeStyle.subtitle, { color: themes.textSecondary }]}>
-          {transactions.length} transactions au total
+          {transactions.length} transactions in total
         </Text>
       </View>
 
@@ -44,7 +44,7 @@ export default function TransactionScreen() {
         ) : (
           <View style={themeStyle.emptyState}>
             <Text style={{ color: themes.textSecondary }}>
-              Aucune dépense enregistrée
+              No transactions found
             </Text>
           </View>
         )}
