@@ -2,12 +2,14 @@ import { BudgetCard } from "@/components/BudgetCard";
 import { SetBudgetModal } from "@/components/BudgetModal";
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { QuickActions } from "@/components/QuickActions";
+import { AddReminderModal } from "@/components/ReminderModal";
 import { TransactionItem } from "@/components/TransactionItem";
 import { budgetService, Transaction } from "@/service/expense";
 import { profileService } from "@/service/profile";
 import { themes, themeStyle } from "@/styles/theme";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import React, { useCallback, useState } from "react";
 import {
   RefreshControl,
   ScrollView,
@@ -19,11 +21,17 @@ import {
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function DashboardScreen() {
-  const [budgetData, setBudget] = useState({ spent: 0, total: 0, transactions: [] as Transaction[] });
+  const [budgetData, setBudget] = useState({
+    spent: 0,
+    total: 0,
+    transactions: [] as Transaction[],
+  });
 
-  const [refreshing, setRefreshing] = useState(false); 
-  const [user, setUser] = useState({ firstName: "", lastName: "" }); 
+  const [refreshing, setRefreshing] = useState(false);
+  const [user, setUser] = useState({ firstName: "", lastName: "" });
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isReminderVisible, setIsReminderVisible] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0); 
 
   const loadData = async () => {
     const [budgetData, profileData] = await Promise.all([
@@ -37,12 +45,14 @@ export default function DashboardScreen() {
 
   const handleUpdateTotalBudget = async (total: number) => {
     await budgetService.saveTotalBudget(total);
-    loadData(); 
+    loadData();
   };
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadData();
+    }, []),
+  );
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -66,44 +76,59 @@ export default function DashboardScreen() {
           name={`${user.firstName} ${user.lastName}`}
           theme={themes}
         />
-        <TouchableOpacity onPress={() => setIsModalVisible(true)} activeOpacity={0.9}>
-          <BudgetCard spent={budgetData.spent} total={budgetData.total} theme={themes} />
+        <TouchableOpacity
+          onPress={() => setIsModalVisible(true)}
+          activeOpacity={0.9}
+        >
+          <BudgetCard
+            spent={budgetData.spent}
+            total={budgetData.total}
+            theme={themes}
+          />
 
           <View style={styles.editBadge}>
             <Ionicons name="pencil" size={12} color={themes.background} />
             <Text style={styles.editText}>Edit</Text>
           </View>
         </TouchableOpacity>
-        <QuickActions theme={themes} />
+        <QuickActions theme={themes}   onPressRemind={() => setIsReminderVisible(true)} />
         <Text style={styles.sectionTitle}>Recent Bills</Text>
 
         {budgetData.transactions.length > 0 ? (
-          budgetData.transactions.slice(0, 3).map((item) => (
-            <TransactionItem 
-              key={item.id}
-              store={item.title} 
-              category={item.category}
-              date={new Date(item.date).toLocaleDateString()} 
-              price={`-$${item.amount}`} 
-            />
-          ))
+          budgetData.transactions
+            .slice(0, 5)
+            .map((item) => (
+              <TransactionItem
+                key={item.id}
+                store={item.title}
+                category={item.category}
+                date={new Date(item.date).toLocaleDateString()}
+                price={`-$${item.amount}`}
+              />
+            ))
         ) : (
           <View style={themeStyle.emptyContainer}>
-            <Text style={{ color: themes.textSecondary }}>No recent transactions</Text>
+            <Text style={{ color: themes.textSecondary }}>
+              No recent transactions
+            </Text>
           </View>
         )}
-      
       </ScrollView>
-      <SetBudgetModal 
-        visible={isModalVisible} 
-        onClose={() => setIsModalVisible(false)} 
-        onSave={handleUpdateTotalBudget} 
+      <SetBudgetModal
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        onSave={handleUpdateTotalBudget}
         theme={themes}
+      />
+      <AddReminderModal 
+        visible={isReminderVisible}
+        theme={themes}
+        onClose={() => setIsReminderVisible(false)}
+        onRefresh={() => setRefreshKey(prev => prev + 1)}
       />
     </SafeAreaProvider>
   );
 }
-
 
 const styles = StyleSheet.create({
   budgetCard: {
@@ -192,20 +217,20 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   editBadge: {
-    position: 'absolute',
+    position: "absolute",
     right: 35,
     top: 20,
     backgroundColor: themes.primary,
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 10,
-    alignItems: 'center',
-    gap: 4
+    alignItems: "center",
+    gap: 4,
   },
   editText: {
     color: themes.background,
     fontSize: 10,
-    fontWeight: 'bold'
-  }
+    fontWeight: "bold",
+  },
 });
