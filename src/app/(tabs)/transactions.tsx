@@ -9,13 +9,14 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 export default function TransactionScreen() {
   const [transactions, setTransactions] = useState([]);
 
+  const fetchTransactions = async () => {
+    const data = await budgetService.getData();
+    setTransactions(data.transactions);
+  };
+
+  // Recharger quand on arrive sur la page
   useFocusEffect(
     useCallback(() => {
-      const fetchTransactions = async () => {
-        const data = await budgetService.getData();
-        setTransactions(data.transactions);
-      };
-
       fetchTransactions();
     }, []),
   );
@@ -26,7 +27,7 @@ export default function TransactionScreen() {
     >
       <View style={themeStyle.header}>
         <Text style={[themeStyle.title, { color: themes.text }]}>
-          Historique
+          All Transactions
         </Text>
         <Text style={[themeStyle.subtitle, { color: themes.textSecondary }]}>
           {transactions.length} transactions au total
@@ -35,7 +36,11 @@ export default function TransactionScreen() {
 
       <View style={themeStyle.listContainer}>
         {transactions.length > 0 ? (
-          <ExpenseList transactions={transactions} theme={themes} />
+          <ExpenseList
+            transactions={transactions}
+            refresh={fetchTransactions}
+            theme={themes}
+          />
         ) : (
           <View style={themeStyle.emptyState}>
             <Text style={{ color: themes.textSecondary }}>

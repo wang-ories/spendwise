@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import {
-    Modal,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Modal,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 export const SetBudgetModal = ({ visible, onClose, onSave, theme }: any) => {

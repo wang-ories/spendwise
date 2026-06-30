@@ -21,7 +21,7 @@ export const QuickActions = ({ theme }: { theme: any }) => (
       icon="pie-chart"
       label="Stats"
       theme={theme}
-      onPress={() => router.push("/")}
+      onPress={() => router.push("/analytics")}
     />
   </View>
 );
