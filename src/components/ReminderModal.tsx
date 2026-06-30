@@ -1,7 +1,7 @@
 import { reminderService } from '@/service/reminder';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Modal,
   Platform,
@@ -22,6 +22,11 @@ interface AddReminderModalProps {
 export const AddReminderModal = ({ visible, onClose, theme, onRefresh }: AddReminderModalProps) => {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState(new Date());
+  const [canRemind, setCanRemind] = useState(true);
+
+  useEffect(() => {
+    reminderService.isNotificationsEnabled().then(setCanRemind);
+  }, [visible]);
 
   const showAndroidPicker = () => {
     DateTimePickerAndroid.open({
@@ -114,16 +119,15 @@ export const AddReminderModal = ({ visible, onClose, theme, onRefresh }: AddRemi
 
           <View style={styles.actionRow}>
             <TouchableOpacity onPress={onClose} style={styles.cancelBtn}>
-              <Text style={{ color: theme.textSecondary, fontWeight: '600' }}>Annuler</Text>
+              <Text style={{ color: theme.textSecondary, fontWeight: '600' }}>Cancel</Text>
             </TouchableOpacity>
-            
+  
             <TouchableOpacity 
               onPress={handleSave} 
-              style={[styles.saveBtn, { backgroundColor: theme.primary, opacity: title.trim() ? 1 : 0.5 }]}
-              disabled={!title.trim()}
-            >
-              <Text style={{ color: theme.background, fontWeight: 'bold', fontSize: 16 }}>
-                Schedule
+              disabled={!title.trim() || !canRemind}
+              style={canRemind ? styles.saveBtn : styles.cancelBtn }>
+              <Text style={{ color: canRemind ? theme.background : theme.textSecondary }}>
+                {canRemind ? "Set Reminder" : "Disabled"}
               </Text>
             </TouchableOpacity>
           </View>
