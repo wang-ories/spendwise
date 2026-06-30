@@ -9,10 +9,9 @@ export const themes = {
   textSecondary: "#94A3B8",
   success: "#34D399",
   accent: "#F59E0B",
-  // Status Colors
-  warning: "#f59e0b", // Yellow
-  orange: "#f97316", // Orange (for 50-75% range)
-  alert: "#ff5252", // Red
+  warning: "#f59e0b", 
+  orange: "#f97316", 
+  alert: "#ff5252",
 };
 
 export const themeStyle = StyleSheet.create({
@@ -41,11 +40,6 @@ export const themeStyle = StyleSheet.create({
     color: themes.textSecondary,
     fontSize: 14,
   },
-  /*header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },*/
   header: {
     paddingHorizontal: 25,
     paddingTop: 20,
